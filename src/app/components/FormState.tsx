@@ -1,6 +1,6 @@
 "use client";
 
-import React, { CSSProperties, useState } from "react";
+import React, { useState } from "react";
 
 import Select, { AriaOnFocus } from "react-select";
 import { ColourOption, colourOptions } from "../docs/data";
@@ -9,21 +9,8 @@ export default function FormState() {
   const [ariaFocusMessage, setAriaFocusMessage] = useState("");
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  const style: { [key: string]: CSSProperties } = {
-    blockquote: {
-      fontStyle: "italic",
-      fontSize: ".75rem",
-      margin: "1rem 0",
-    },
-    label: {
-      fontSize: ".75rem",
-      fontWeight: "bold",
-      lineHeight: 2,
-    },
-  };
-
   const onFocus: AriaOnFocus<ColourOption> = ({ focused, isDisabled }) => {
-    const msg = `You are currently focused on option ${focused.label}${
+    const msg = `Você selecionou: ${focused.label}${
       isDisabled ? ", disabled" : ""
     }`;
     setAriaFocusMessage(msg);
@@ -34,13 +21,19 @@ export default function FormState() {
   const onMenuClose = () => setIsMenuOpen(false);
 
   return (
-    <form>
-      <label style={style.label} id="aria-label" htmlFor="aria-example-input">
-        Select a color
+    <form className="space-y-6 space">
+      <label
+        className="text-2xl font-bold leading-loose text-green-800"
+        id="aria-label"
+        htmlFor="selectState"
+      >
+        Selecione seu estado
       </label>
 
       {!!ariaFocusMessage && !!isMenuOpen && (
-        <blockquote style={style.blockquote}>{ariaFocusMessage}</blockquote>
+        <blockquote className="italic text-xs my-4">
+          {ariaFocusMessage}
+        </blockquote>
       )}
 
       <Select
@@ -48,12 +41,18 @@ export default function FormState() {
         ariaLiveMessages={{
           onFocus,
         }}
-        inputId="aria-example-input"
+        inputId="selectState"
         name="aria-live-color"
         onMenuOpen={onMenuOpen}
         onMenuClose={onMenuClose}
         options={colourOptions}
+        placeholder="Estados"
       />
+      <div className="flex justify-end bottom-1">
+        <button className="h-11 px-6 bg-gray-700 text-white rounded-md">
+          Próximo
+        </button>
+      </div>
     </form>
   );
 }
